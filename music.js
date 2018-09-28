@@ -1,14 +1,14 @@
 //input artist/song/album
 //need an onclick function when you click the search bar
 
-var database = firebase.database()
+// var database = firebase.database()
 
-database.ref("")
+// database.ref("")
 
-function musicDex() {
-    event.preventDefault().
-
-    var searchStuff = $(".form-control mr-sm-2").val().trim();
+function musicDex(e) {
+    e.preventDefault();
+    alert(1);
+    var searchStuff = $("#search-query").val().trim();
 
 
     var api1 = ""
@@ -27,36 +27,29 @@ function musicDex() {
     })
 
     $.ajax({
-        url: api1,
+        url: "https://www.googleapis.com/youtube/v3/search?part=snippet&q="
+            + searchStuff + "&key=AIzaSyDTmuq2U1iwoNN7IDwnuJdPTClXjSUQc-o",
         method: 'GET'
-    }).then(function (response1) {
+    }).then(function (response) {
+        console.log(response.items)
+        for (i = 0; i < 5; i++) {
+            if (response.items[i].id.kind === "youtube#channel") {
+
+                continue
+            }
 
 
+            var vidId = response.items[i].id.videoId
+            console.log(vidId);
+            $("#services").append('<iframe width="560" height="315" src="https://www.youtube.com/embed/' + vidId + '" frameborder="0" allow="autoplay; encrypted-media" allowfullscreen></iframe>')
+        }
     })
+}
 
 
-    $.ajax({
-        url: api2,
-        method: 'GET'
-    }).then(function (response2) {
-
-
-    })
-    $.ajax({
-        url: api3,
-        method: 'GET'
-    }).then(function (response3) {
-
-
-    })
-
-
-    $(".form-control mr-sm-2").empty();
-
-    })
 //needs different tabs that we can throw things into
 //
 //need to average the rating with reviews
 
-$(".btn btn-outline-success my-2 my-sm-0").on("click", musicDex)
+$("#search").on("click", musicDex)
 //firebase needs to record what genre
