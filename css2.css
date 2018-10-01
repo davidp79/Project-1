@@ -1,3 +1,13 @@
-body {
-    background-image: url(https://www.pexels.com/photo/crowd-in-front-of-people-playing-musical-instrument-during-nighttime-196652/)
+body{
+    background-image: url ("C:\Users\David\sandbox\Project-1\images\headerbg.jpeg");
+    background-color: blue;
 }
+#genius {
+    float: left;
+
+}
+#youtube {
+    position: center;
+
+}
+        
