@@ -5,11 +5,16 @@
 
 // database.ref("")
 
-function musicDex(e) {
-    e.preventDefault();
-    alert(1);
-    var searchStuff = $("#search-query").val().trim();
+$(".submit").on("click", function(event){
+    event.preventDefault();
+    musicDex();
+})
 
+function musicDex() {
+
+    alert(1);
+    var searchStuff = $("#search").val().trim();
+console.log(searchStuff)
 
     var api1 = ""
     api1 += '?' + $.param({
@@ -41,7 +46,7 @@ function musicDex(e) {
 
             var vidId = response.items[i].id.videoId
             console.log(vidId);
-            $("#services").append('<iframe width="560" height="315" src="https://www.youtube.com/embed/' + vidId + '" frameborder="0" allow="autoplay; encrypted-media" allowfullscreen></iframe>')
+            $("#youtube").append('<iframe width="560" height="315" src="https://www.youtube.com/embed/' + vidId + '" frameborder="100" allow="autoplay; encrypted-media" allowfullscreen></iframe>')
         }
     })
 }
@@ -51,5 +56,4 @@ function musicDex(e) {
 //
 //need to average the rating with reviews
 
-$("#search").on("click", musicDex)
 //firebase needs to record what genre
