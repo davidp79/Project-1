@@ -12,7 +12,8 @@ $(".submit").on("click", function (event) {
     event.preventDefault();
     
     musicDex();
-    
+    $("#youtube").empty();
+    $("#genius").empty();
 
 })
 
