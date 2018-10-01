@@ -1,0 +1,16 @@
+.nav-wrapper {
+    background-color: gray;
+    height: 60px;
+    
+
+}
+
+.brand-logo {
+    float: left;
+
+}
+
+.right {
+    float: right;
+    
+}
