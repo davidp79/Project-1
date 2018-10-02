@@ -31,7 +31,7 @@ function musicDex() {
             + searchStuff + "&key=AIzaSyDTmuq2U1iwoNN7IDwnuJdPTClXjSUQc-o",
         method: 'GET'
     }).then(function (response) {
-        console.log(response.items)
+        // console.log(response.items)
         for (i = 0; i < 5; i++) {
             if (response.items[i].id.kind === "youtube#channel") {
                 continue
@@ -39,7 +39,7 @@ function musicDex() {
 
 
             var vidId = response.items[i].id.videoId
-            console.log(vidId);
+            // console.log(vidId);
             $("#youtube").append('<iframe width="560" height="315" src="https://www.youtube.com/embed/' + vidId + '" frameborder="100" allow="autoplay; encrypted-media" allowfullscreen></iframe>')
         }
     })
@@ -88,18 +88,14 @@ function musicDex() {
 
 
 
-
-
     function topTrack() {
         $.ajax({
             url: "http://ws.audioscrobbler.com/2.0/?method=chart.gettoptracks&api_key=4eb509c03c98813c8a254fc061a34193&format=json",
             method: 'GET'
         }).then(function (response) {
-            console.log(response);
+            // console.log(response);
         })
     }
-
-
 
 }
 
@@ -108,7 +104,7 @@ function topArtist() {
         url: "http://ws.audioscrobbler.com/2.0/?method=chart.gettopartists&api_key=4eb509c03c98813c8a254fc061a34193&format=json",
         method: 'GET'
     }).then(function (response) {
-        console.log(response.artists.artist[0].name);
+        // console.log(response.artists.artist[0].name);
 
         var ol = $("<ol>")
         $("#list").append(ol)
@@ -119,7 +115,6 @@ function topArtist() {
             li.data("artist",response.artists.artist[i].name);
             ol.append(li);
         }
-        
 
     })
 }
@@ -140,11 +135,11 @@ topArtist();
         method: 'GET'
     }).then(function (response) {
 
-        console.log(response);
+        // console.log(response);
 
         var artist = response.response.hits[0].result.primary_artist.api_path
 
-        console.log(artist);
+        // console.log(artist);
 
         $.ajax({
             url: "https://api.genius.com" + artist +
@@ -158,19 +153,36 @@ topArtist();
             img.attr("src", x.artist.image_url);
             bioPic.append(img);
             $("#genius").prepend(bioPic);
-            console.log(x.artist.name);
-            console.log(x.artist.alternate_names);
+            // console.log(x.artist.name);
+            // console.log(x.artist.alternate_names);
             var name = x.artist.alternate_names;
             var moreName = $("<div>");
             moreName.append(name);
             $("#genius").append(moreName)
 
             var describe = x.artist.description.html;
-            console.log(describe)
+            // console.log(describe)
             var bio = $("<div>");
             bio.append(describe);
             $("#genius").append(bio);
-
+            
+            $.ajax({
+                url: "https://www.googleapis.com/youtube/v3/search?part=snippet&q="
+                    + liLink + "&key=AIzaSyDTmuq2U1iwoNN7IDwnuJdPTClXjSUQc-o",
+                method: 'GET'
+            }).then(function (response) {
+                
+                console.log(response.items)
+                for (i = 0; i < 5; i++) {
+                    if (response.items[i].id.kind === "youtube#channel") {
+                        continue
+                    }
+                    var vidId = response.items[i].id.videoId
+                    // console.log(vidId);
+                    $("#youtube").append('<iframe width="560" height="315" src="https://www.youtube.com/embed/' + vidId + '" frameborder="100" allow="autoplay; encrypted-media" allowfullscreen></iframe>')
+                }
+            })
+        
         })
     })  
 
