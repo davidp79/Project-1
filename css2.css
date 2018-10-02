@@ -11,6 +11,12 @@
   main {
     flex: 1 0 auto;
   }
+  #youtube {
+    align-content: center;
+  }
+  .card {
+    float: left;
+  }
 
 
       
