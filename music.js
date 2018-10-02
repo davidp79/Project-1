@@ -6,6 +6,23 @@
 //database.ref("")
 
 // $("#search").on("click", musicDex);
+
+var config = {
+    apiKey: "AIzaSyBJkVP_S8z8NCq0nWluCifA-H2eaId7BUY",
+    authDomain: "project-1-in-class.firebaseapp.com",
+    databaseURL: "https://project-1-in-class.firebaseio.com",
+    projectId: "project-1-in-class",
+    storageBucket: "",
+    messagingSenderId: "1024436223043"
+  };
+  
+
+
+
+firebase.initializeApp(config);
+var database = firebase.database();
+
+
 $(document).ready(function(){
     $('.parallax').parallax();
   });
@@ -18,6 +35,7 @@ $(".submit").on("click", function (event) {
     musicDex();
     $("#youtube").empty();
     $("#genius").empty();
+    $("#rating").empty();
 
 })
 
@@ -25,6 +43,32 @@ $(".submit").on("click", function (event) {
 function musicDex() {
 
     var searchStuff = $("#search").val().trim();
+
+    function rating(){
+        for (i = 0; i < 5; i++) {
+            var starButton = $("<button>");
+            starButton.addClass("star");
+            starButton.attr("data-number", i + 1);
+            starButton.attr("data-artist",searchStuff);
+            starButton.append("<i class='far fa-star'></i>");
+        console.log(starButton)
+            $("#rating").append(starButton)
+
+        }
+        
+        
+        $(".star").on("click", function () {
+            var artistRating = $(this).attr("data-number");
+            console.log(artistRating);
+            var artistName= $(this).attr("data-artist");
+            console.log(artistName)
+            database.ref().push({
+artistName: artistName,
+artistRating: artistRating,
+
+            })
+        })}
+        rating();
 
     $.ajax({
         url: "https://www.googleapis.com/youtube/v3/search?part=snippet&q="
@@ -126,8 +170,34 @@ topArtist();
     $(document).on("click", ".list", function () {
         $("#youtube").empty();
         $("#genius").empty();
+        $("#rating").empty();
 
         var liLink = $(this).data("artist");
+        function rating(){
+            for (i = 0; i < 5; i++) {
+                var starButton = $("<button>");
+                starButton.addClass("star");
+                starButton.attr("data-number", i + 1);
+                starButton.attr("data-artist",liLink);
+                starButton.append("<i class='far fa-star'></i>");
+            console.log(starButton)
+                $("#rating").append(starButton)
+    
+            }
+            
+            
+            $(".star").on("click", function () {
+                var artistRating = $(this).attr("data-number");
+                console.log(artistRating);
+                var artistName= $(this).attr("data-artist");
+                console.log(artistName)
+                database.ref().push({
+    artistName: artistName,
+    artistRating: artistRating,
+    
+                })
+            })}
+            rating();
     $.ajax({
 
         url: "https://api.genius.com/search?q=" + liLink +
@@ -140,6 +210,8 @@ topArtist();
         var artist = response.response.hits[0].result.primary_artist.api_path
 
         // console.log(artist);
+        
+    
 
         $.ajax({
             url: "https://api.genius.com" + artist +
