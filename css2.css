@@ -1,16 +1,25 @@
-.nav-wrapper {
-    background-color: gray;
-    height: 60px;
+.parallax-container {
+    height: 400px;
+  }
+  
+  body {
+    display: flex;
+    min-height: 100vh;
+    flex-direction: column;
+  }
+
+  main {
+    flex: 1 0 auto;
+  }
+
+
+      
     
 
-}
 
-.brand-logo {
-    float: left;
 
-}
 
-.right {
-    float: right;
-    
-}
+
+
+
+        
