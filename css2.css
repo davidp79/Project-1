@@ -1,6 +1,5 @@
-    
-  .parallax-container {
-    height: 300px;
+.parallax-container {
+    height: 400px;
   }
   
   body {
@@ -12,39 +11,19 @@
   main {
     flex: 1 0 auto;
   }
-  
-  div #list {
-    padding: 20px;
+  #youtube {
+    align-content: center;
   }
-  ol {
-    list-style: none;
-    counter-reset: my-awesome-counter;
-  }
-  ol li {
-    list-style: none;
-    counter-increment: my-awesome-counter;
-  }
-  ol li::before {
-    list-style: none;
-    content: counter(my-awesome-counter) ". ";
-    color: white;
-    font-weight: bold;
+  .card {
+    float: left;
   }
 
-  #toplist {
-    margin: 3px;
-  }
-  
-  #card-row {
-    padding:20px;
 
-  }
+      
+    
 
-  #card-title {
-    padding-top: 10px;
-    padding-left: 55px;
-    margin: 0;
-  }
+
+
 
 
 
