@@ -28,15 +28,17 @@ $(document).ready(function () {
     $('.parallax').parallax();
 });
 
+topArtist(); 
 
 $(".submit").on("click", function (event) {
-
+if ($("#search").val()=== "") {
+return false 
+    }
     event.preventDefault(); 
     musicDex();
 //  $("#youtube").empty();
 //     $("#genius").empty();
 //     $("#rating").empty();
-   
    
 
 })
@@ -44,49 +46,54 @@ $(".submit").on("click", function (event) {
 
 function musicDex() {
 
+    // $("#rating").empty();
+    
     var searchStuff = $("#search").val().trim();
 
-    function rating() {
-        for (i = 0; i < 5; i++) {
-            var starButton = $("<button>");
-            starButton.addClass("star");
-            starButton.attr("data-number", i + 1);
-            starButton.attr("data-artist", searchStuff);
-            starButton.append("<i class='far fa-star'></i>");
-            console.log(starButton)
-            $("#rating").append(starButton)
+    
+    // function rating() {
+    //     for (i = 0; i < 5; i++) {
+    //         var starButton = $("<button>");
+    //         starButton.addClass("star");
+    //         starButton.attr("data-number", i + 1);
+    //         starButton.attr("data-artist", searchStuff);
+    //         starButton.append("<i class='far fa-star'></i>");
+    //         console.log(starButton)
+    //         $("#rating").append(starButton)
+    //         // console.log("hello")
 
-        }
-
-
-        $(".star").on("click", function () {
-            var artistRating = $(this).attr("data-number");
-            console.log(artistRating);
-            var artistName = $(this).attr("data-artist");
-            console.log(artistName)
-            database.ref("/ratings/" + artistName).push({
-
-                artistRating: artistRating,
-
-            })
+    //     }
 
 
-        })
-        // database.ref("/ratings/"+artistName).on("child_added",function(snapshot) {
-        //     console.log(snapshot.val())
-        // })
-    }
-    rating();
-    updateRating(artistName);
+    //     $(".star").on("click", function () {
+    //         var artistRating = $(this).attr("data-number");
+    //         console.log(artistRating);
+    //         var artistName = $(this).attr("data-artist");
+    //         console.log(artistName)
+    //         database.ref("/ratings/" + artistName).push({
 
+    //             artistRating: artistRating,
+
+    //         })
+
+
+    //     })
+    //     // database.ref("/ratings/"+artistName).on("child_added",function(snapshot) {
+    //     //     console.log(snapshot.val())
+    //     // })
+    //   updateRating(artistName);
+    // }
+   
+  
+    rating(searchStuff);
     $.ajax({
         url: "https://www.googleapis.com/youtube/v3/search?part=snippet&q="
             + searchStuff + "&key=AIzaSyDTmuq2U1iwoNN7IDwnuJdPTClXjSUQc-o",
         method: 'GET'
     }).then(function (response) {
         $("#youtube").empty();
-        $("#genius").empty();
-        $("#rating").empty();
+        // $("#genius").empty();
+        // $("#rating").empty();
        
         // console.log(response.items)
         for (i = 0; i < 5; i++) {
@@ -107,6 +114,7 @@ function musicDex() {
         method: 'GET'
     }).then(function (response) {
 
+        
         // console.log(response);
 
         var artist = response.response.hits[0].result.primary_artist.api_path
@@ -119,6 +127,7 @@ function musicDex() {
                 "&text_format=html",
             method: 'GET'
         }).then(function (response) {
+            $("#genius").empty();
             var bioPic = $("<div>");
             var img = $("<img>");
             var x = response.response;
@@ -145,14 +154,7 @@ function musicDex() {
 
 
 
-    function topTrack() {
-        $.ajax({
-            url: "https://ws.audioscrobbler.com/2.0/?method=chart.gettoptracks&api_key=4eb509c03c98813c8a254fc061a34193&format=json",
-            method: 'GET'
-        }).then(function (response) {
-            // console.log(response);
-        })
-    }
+ 
 
 }
 
@@ -181,45 +183,15 @@ function topArtist() {
 
 
 
-topArtist();
+
 
 $(document).on("click", ".list", function () {
    
     $("#rating").empty();
 
     var liLink = $(this).data("artist");
-    function rating() {
-        for (i = 0; i < 5; i++) {
-            var starButton = $("<button>");
-            starButton.addClass("star");
-            starButton.attr("data-number", i + 1);
-            starButton.attr("data-artist", liLink);
-            starButton.append("<i class='far fa-star'></i>");
-            console.log(starButton)
-            $("#rating").append(starButton)
-
-        }
-
-
-        $(".star").on("click", function () {
-            var artistRating = $(this).attr("data-number");
-            console.log(artistRating);
-            var artistName = $(this).attr("data-artist");
-            console.log(artistName)
-            database.ref("/ratings/" + artistName).push({
-
-                artistRating: artistRating,
-
-            })
-            //      database.ref("/ratings/"+artistName).on("child_added",function(snapshot) {
-            //     // console.log(snapshot.val())
-            //     console.log(snapshot.val().artistRating)
-            // })
-            updateRating(artistName)
-        })
-
-    }
-    rating();
+    
+    rating(liLink);
     $.ajax({
 
         url: "https://api.genius.com/search?q=" + liLink +
@@ -312,3 +284,37 @@ function updateRating(artistName) {
         $("#rating").append(aveDiv)
     })
 };
+
+
+function rating(artist) {
+    $("#rating").empty();
+    for (i = 0; i < 5; i++) {
+        var starButton = $("<button>");
+        starButton.addClass("star");
+        starButton.attr("data-number", i + 1);
+        starButton.attr("data-artist", artist);
+        starButton.append("<i class='far fa-star'></i>");
+        console.log(starButton)
+        $("#rating").append(starButton)
+
+    }
+
+
+    $(".star").on("click", function () {
+        var artistRating = $(this).attr("data-number");
+        console.log(artistRating);
+        var artistName = $(this).attr("data-artist");
+        console.log(artistName)
+        database.ref("/ratings/" + artistName).push({
+
+            artistRating: artistRating,
+
+        })
+        //      database.ref("/ratings/"+artistName).on("child_added",function(snapshot) {
+        //     // console.log(snapshot.val())
+        //     console.log(snapshot.val().artistRating)
+        // })
+        updateRating(artistName)
+    })
+
+}
