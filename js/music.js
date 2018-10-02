@@ -46,7 +46,7 @@ console.log(searchStuff)
 
             var vidId = response.items[i].id.videoId
             console.log(vidId);
-            $("#youtube").append('<iframe width="560" height="315" src="https://www.youtube.com/embed/' + vidId + '" frameborder="100" allow="autoplay; encrypted-media" allowfullscreen></iframe>')
+            $("#youtube").append('<iframe width="500" height="315" src="https://www.youtube.com/embed/' + vidId + '" frameborder="100" allow="autoplay; encrypted-media" allowfullscreen></iframe>')
         }
     })
 }
