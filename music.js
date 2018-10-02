@@ -170,11 +170,11 @@ function musicDex() {
 
 function topArtist() {
     $.ajax({
-        url: "http://ws.audioscrobbler.com/2.0/?method=chart.gettopartists&api_key=4eb509c03c98813c8a254fc061a34193&format=json",
+        url: "https://ws.audioscrobbler.com/2.0/?method=chart.gettopartists&api_key=4eb509c03c98813c8a254fc061a34193&format=json",
         method: 'GET'
     }).then(function (response) {
 
-        // console.log(response.artists.artist[0].name);
+        console.log(response.artists.artist[0].name);
         $("#youtube").empty();
         $("#genius").empty();
         $("#rating").empty();
