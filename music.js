@@ -16,7 +16,6 @@ var config = {
     messagingSenderId: "1024436223043"
 };
 
-
 var artistName
 var artistRating
 
@@ -30,12 +29,10 @@ $(document).ready(function () {
 });
 
 
-
 $(".submit").on("click", function (event) {
 
     event.preventDefault(); 
     musicDex();
-
 //  $("#youtube").empty();
 //     $("#genius").empty();
 //     $("#rating").empty();
@@ -67,7 +64,6 @@ function musicDex() {
             console.log(artistRating);
             var artistName = $(this).attr("data-artist");
             console.log(artistName)
-
             database.ref("/ratings/" + artistName).push({
 
                 artistRating: artistRating,
@@ -123,26 +119,18 @@ function musicDex() {
                 "&text_format=html",
             method: 'GET'
         }).then(function (response) {
-            var artistName = response.response.artist.name;
-            $("#artist-name").html("<h5>" + artistName + "</h5>");
             var bioPic = $("<div>");
-            bioPic.addClass("card-image");
             var img = $("<img>");
             var x = response.response;
             img.attr("src", x.artist.image_url);
             bioPic.append(img);
-            $("#genius-biopic").prepend(bioPic);
+            $("#genius").prepend(bioPic);
             // console.log(x.artist.name);
             // console.log(x.artist.alternate_names);
             var name = x.artist.alternate_names;
-            console.log(name);
-            var moreName = $("<span>");
-            moreName.addClass("card-title");
-            moreName.text("Nicknames: ");
-            for (var i = 0; i < name.length; i++) {
-                moreName.append(name[i] + ", ");
-            }
-            $("#genius-biopic").append(moreName)
+            var moreName = $("<div>");
+            moreName.append(name);
+            $("#genius").append(moreName)
 
             var describe = x.artist.description.html;
             // console.log(describe)
@@ -170,30 +158,23 @@ function musicDex() {
 
 function topArtist() {
     $.ajax({
-        url: "http://ws.audioscrobbler.com/2.0/?method=chart.gettopartists&api_key=4eb509c03c98813c8a254fc061a34193&format=json",
+        url: "https://ws.audioscrobbler.com/2.0/?method=chart.gettopartists&api_key=4eb509c03c98813c8a254fc061a34193&format=json",
         method: 'GET'
     }).then(function (response) {
-
         // console.log(response.artists.artist[0].name);
         $("#youtube").empty();
         $("#genius").empty();
         $("#rating").empty();
        
-
         var ol = $("<ol>")
         $("#list").append(ol)
-
         for (var i = 0; i < 10; i++) {
-
-            var button = $("<button>");
-            button.addClass("btn teal");
-            button.attr("id", "toplist");
-            button.html("<li class='list' data-artist=" + response.artists.artist[i].name + "> " + response.artists.artist[i].name + " </li>");
-            ol.append(button);
-            
-           
+            var li = $("<li>");
+            li.html(response.artists.artist[i].name);
+            li.addClass("list");
+            li.data("artist", response.artists.artist[i].name);
+            ol.append(li);
         }
-
 
     })
 }
@@ -203,10 +184,7 @@ function topArtist() {
 topArtist();
 
 $(document).on("click", ".list", function () {
-
    
-
-  
     $("#rating").empty();
 
     var liLink = $(this).data("artist");
@@ -228,8 +206,6 @@ $(document).on("click", ".list", function () {
             console.log(artistRating);
             var artistName = $(this).attr("data-artist");
             console.log(artistName)
-
-            
             database.ref("/ratings/" + artistName).push({
 
                 artistRating: artistRating,
@@ -241,6 +217,7 @@ $(document).on("click", ".list", function () {
             // })
             updateRating(artistName)
         })
+
     }
     rating();
     $.ajax({
@@ -290,10 +267,6 @@ $(document).on("click", ".list", function () {
                     + liLink + "&key=AIzaSyDTmuq2U1iwoNN7IDwnuJdPTClXjSUQc-o",
                 method: 'GET'
             }).then(function (response) {
-
-
-                
-
 $("#youtube").empty();
                 // console.log(response.items)
                 for (i = 0; i < 5; i++) {
