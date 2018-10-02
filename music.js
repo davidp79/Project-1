@@ -6,6 +6,10 @@
 //database.ref("")
 
 // $("#search").on("click", musicDex);
+$(document).ready(function(){
+    $('.parallax').parallax();
+  });
+        
 
 $(".submit").on("click", function (event) {
 

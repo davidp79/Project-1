@@ -1,13 +1,25 @@
-body{
-    background-image: url ("C:\Users\David\sandbox\Project-1\images\headerbg.jpeg");
-    background-color: blue;
-}
-#genius {
-    float: left;
+.parallax-container {
+    height: 400px;
+  }
+  
+  body {
+    display: flex;
+    min-height: 100vh;
+    flex-direction: column;
+  }
 
-}
-#youtube {
-    position: center;
+  main {
+    flex: 1 0 auto;
+  }
 
-}
+
+      
+    
+
+
+
+
+
+
+
         
