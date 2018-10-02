@@ -3,17 +3,19 @@
   }
   
   body {
+    
     display: flex;
     min-height: 100vh;
     flex-direction: column;
+    background-image: url("./images/Phase_4-3blog_345x.jpg");
+    background-image: cover;
+
   }
 
   main {
     flex: 1 0 auto;
   }
-  #youtube {
-    align-content: center;
-  }
+
   .card {
     float: left;
   }

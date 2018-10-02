@@ -124,7 +124,7 @@ function musicDex() {
         $.ajax({
             url: "https://api.genius.com" + artist +
                 "/?access_token=A3QFPk4RZGxV8fgT_41uiJiCAeyXq-UhJ-xnxipOkgZSHnShtSRVdesaqTR8axQS" +
-                "&text_format=html",
+                "&text-red_format=html",
             method: 'GET'
         }).then(function (response) {
             $("#genius").empty();
