@@ -127,9 +127,9 @@ function geniusSearch(x) {
 
                 var artistName = $(this).attr("data-artist");
 
-                database.ref("/ratings/").push({
-                    artistName: artistName,
-                    artistRating: artistRating
+                database.ref("/ratings/" + artistName).push({
+
+                    artistRating: artistRating,
                 })
 
                 updateRating(artistN);
