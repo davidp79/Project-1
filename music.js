@@ -6,14 +6,13 @@
 //database.ref("")
 
 // $("#search").on("click", musicDex);
-
 var config = {
-    apiKey: "AIzaSyBJkVP_S8z8NCq0nWluCifA-H2eaId7BUY",
-    authDomain: "project-1-in-class.firebaseapp.com",
-    databaseURL: "https://project-1-in-class.firebaseio.com",
-    projectId: "project-1-in-class",
-    storageBucket: "",
-    messagingSenderId: "1024436223043"
+    apiKey: "AIzaSyB-gchDCtRKtWEopBSRbu0HuIMVS1yYW6s",
+    authDomain: "my-project-ed37c.firebaseapp.com",
+    databaseURL: "https://my-project-ed37c.firebaseio.com",
+    projectId: "my-project-ed37c",
+    storageBucket: "my-project-ed37c.appspot.com",
+    messagingSenderId: "625568993024"
 };
 
 var artistName
@@ -28,146 +27,125 @@ $(document).ready(function () {
     $('.parallax').parallax();
 });
 
-topArtist(); 
+topArtist();
 
 $(".submit").on("click", function (event) {
-if ($("#search").val()=== "") {
-return false 
-    }
-    event.preventDefault(); 
-    musicDex();
-//  $("#youtube").empty();
-//     $("#genius").empty();
-//     $("#rating").empty();
-   
 
+    event.preventDefault();
+    $("#rating").empty();
+    $("#youtube").empty();
+
+    this.searchStuff = $("#search").val().trim();
+    geniusSearch(this.searchStuff);
+    youtubeSearch(this.searchStuff);
+})
+
+$(document).on("click", ".list", function () {
+
+    $("#rating").empty();
+    $("#youtube").empty();
+
+    this.toplist = $(this).data("artist");
+    geniusSearch(this.toplist);
+    youtubeSearch(this.toplist);
 })
 
 
-function musicDex() {
-
-    // $("#rating").empty();
-    
-    var searchStuff = $("#search").val().trim();
-
-    
-    // function rating() {
-    //     for (i = 0; i < 5; i++) {
-    //         var starButton = $("<button>");
-    //         starButton.addClass("star");
-    //         starButton.attr("data-number", i + 1);
-    //         starButton.attr("data-artist", searchStuff);
-    //         starButton.append("<i class='far fa-star'></i>");
-    //         console.log(starButton)
-    //         $("#rating").append(starButton)
-    //         // console.log("hello")
-
-    //     }
-
-
-    //     $(".star").on("click", function () {
-    //         var artistRating = $(this).attr("data-number");
-    //         console.log(artistRating);
-    //         var artistName = $(this).attr("data-artist");
-    //         console.log(artistName)
-    //         database.ref("/ratings/" + artistName).push({
-
-    //             artistRating: artistRating,
-
-    //         })
-
-
-    //     })
-    //     // database.ref("/ratings/"+artistName).on("child_added",function(snapshot) {
-    //     //     console.log(snapshot.val())
-    //     // })
-    //   updateRating(artistName);
-    // }
-   
-  
-    rating(searchStuff);
+function youtubeSearch(x) {
     $.ajax({
         url: "https://www.googleapis.com/youtube/v3/search?part=snippet&q="
-            + searchStuff + "&key=AIzaSyDTmuq2U1iwoNN7IDwnuJdPTClXjSUQc-o",
+            + x + "&key=AIzaSyDTmuq2U1iwoNN7IDwnuJdPTClXjSUQc-o",
         method: 'GET'
     }).then(function (response) {
-        $("#youtube").empty();
-        // $("#genius").empty();
-        // $("#rating").empty();
-       
-        // console.log(response.items)
+
         for (i = 0; i < 5; i++) {
             if (response.items[i].id.kind === "youtube#channel") {
                 continue
             }
 
-
             var vidId = response.items[i].id.videoId
-            // console.log(vidId);
             $("#youtube").append('<iframe width="560" height="315" src="https://www.youtube.com/embed/' + vidId + '" frameborder="100" allow="autoplay; encrypted-media" allowfullscreen></iframe>')
         }
     })
-
+}
+function geniusSearch(x) {
+    
     $.ajax({
-        url: "https://api.genius.com/search?q=" + searchStuff +
+
+        url: "https://api.genius.com/search?q=" + x +
             "&access_token=A3QFPk4RZGxV8fgT_41uiJiCAeyXq-UhJ-xnxipOkgZSHnShtSRVdesaqTR8axQS",
         method: 'GET'
     }).then(function (response) {
 
-        
         // console.log(response);
 
-        var artist = response.response.hits[0].result.primary_artist.api_path
+        var artist = response.response.hits[0].result.primary_artist.api_path;
 
         // console.log(artist);
 
         $.ajax({
             url: "https://api.genius.com" + artist +
                 "/?access_token=A3QFPk4RZGxV8fgT_41uiJiCAeyXq-UhJ-xnxipOkgZSHnShtSRVdesaqTR8axQS" +
-                "&text-red_format=html",
+                "&text_format=html",
             method: 'GET'
         }).then(function (response) {
             $("#genius").empty();
+
+            var artistN = response.response.artist.name;
+            $("#artist-name").html("<h5>" + artistN + "</h5>");
+
             var bioPic = $("<div>");
             var img = $("<img>");
             var x = response.response;
+            img.addClass("circle");
             img.attr("src", x.artist.image_url);
             bioPic.append(img);
             $("#genius").prepend(bioPic);
-            // console.log(x.artist.name);
-            // console.log(x.artist.alternate_names);
             var name = x.artist.alternate_names;
             var moreName = $("<div>");
             moreName.append(name);
             $("#genius").append(moreName)
 
             var describe = x.artist.description.html;
-            // console.log(describe)
             var bio = $("<div>");
             bio.append(describe);
             $("#genius").append(bio);
 
+            $("#rating").append("<p>Rate 'em!</p>");
+            for (i = 0; i < 5; i++) {
+                var starButton = $("<button>");
+                starButton.addClass("star");
+                starButton.attr("data-number", i + 1);
+                starButton.attr("data-artist", artistN);
+                starButton.append("<i class='far fa-star'></i>");
+                $("#rating").append(starButton);
+            }
+            
+
+            $(".star").on("click", function () {
+                var artistRating = $(this).attr("data-number");
+
+                var artistName = $(this).attr("data-artist");
+
+                database.ref("/ratings/" + artistName).push({
+
+                    artistRating: artistRating,
+                })
+
+                updateRating(artistN);
+            })
+
+            
+
         })
-
     })
-
-
-
-
- 
-
 }
-
 function topArtist() {
     $.ajax({
         url: "https://ws.audioscrobbler.com/2.0/?method=chart.gettopartists&api_key=4eb509c03c98813c8a254fc061a34193&format=json",
         method: 'GET'
     }).then(function (response) {
-        // console.log(response.artists.artist[0].name);
-        $("#youtube").empty();
-        $("#genius").empty();
-        $("#rating").empty();
-       
+
         var ol = $("<ol>")
         $("#list").append(ol)
         for (var i = 0; i < 10; i++) {
@@ -180,141 +158,47 @@ function topArtist() {
 
     })
 }
-
-
-
-
-
-$(document).on("click", ".list", function () {
-   
-    $("#rating").empty();
-
-    var liLink = $(this).data("artist");
-    
-    rating(liLink);
-    $.ajax({
-
-        url: "https://api.genius.com/search?q=" + liLink +
-            "&access_token=A3QFPk4RZGxV8fgT_41uiJiCAeyXq-UhJ-xnxipOkgZSHnShtSRVdesaqTR8axQS",
-        method: 'GET'
-    }).then(function (response) {
-
-        // console.log(response);
-
-        var artist = response.response.hits[0].result.primary_artist.api_path
-
-        // console.log(artist);
-
-
-
-        $.ajax({
-            url: "https://api.genius.com" + artist +
-                "/?access_token=A3QFPk4RZGxV8fgT_41uiJiCAeyXq-UhJ-xnxipOkgZSHnShtSRVdesaqTR8axQS" +
-                "&text_format=html",
-            method: 'GET'
-        }).then(function (response) {
-            $("#genius").empty();
-            
-            var bioPic = $("<div>");
-            var img = $("<img>");
-            var x = response.response;
-            img.attr("src", x.artist.image_url);
-            bioPic.append(img);
-            $("#genius").prepend(bioPic);
-            // console.log(x.artist.name);
-            // console.log(x.artist.alternate_names);
-            var name = x.artist.alternate_names;
-            var moreName = $("<div>");
-            moreName.append(name);
-            $("#genius").append(moreName)
-
-            var describe = x.artist.description.html;
-            // console.log(describe)
-            var bio = $("<div>");
-            bio.append(describe);
-            $("#genius").append(bio);
-
-            $.ajax({
-                url: "https://www.googleapis.com/youtube/v3/search?part=snippet&q="
-                    + liLink + "&key=AIzaSyDTmuq2U1iwoNN7IDwnuJdPTClXjSUQc-o",
-                method: 'GET'
-            }).then(function (response) {
-$("#youtube").empty();
-                // console.log(response.items)
-                for (i = 0; i < 5; i++) {
-                    if (response.items[i].id.kind === "youtube#channel") {
-                        continue
-                    }
-                    var vidId = response.items[i].id.videoId
-                    // console.log(vidId);
-                    $("#youtube").append('<iframe width="560" height="315" src="https://www.youtube.com/embed/' + vidId + '" frameborder="100" allow="autoplay; encrypted-media" allowfullscreen></iframe>')
-                }
-            })
-
-        })
-    })
-
-})
-
-// function updateRating(artistName){
-// database.ref("/ratings/"+artistName).once("value",function(snapshot){
-//     console.log(snapshot.val().artistRating)
-// })}
-
 function updateRating(artistName) {
     database.ref("/ratings/" + artistName).on("value", function (snapshot) {
         var ratingCount = snapshot.numChildren();
         var total = 0;
         snapshot.forEach(function (ratingSnapshot) {
-               console.log(ratingSnapshot.val().artistRating);
-               total += parseInt(ratingSnapshot.val().artistRating);
-         
+            console.log(ratingSnapshot.val().artistRating);
+            total = total + parseInt(ratingSnapshot.val().artistRating);
+        
         });
+    database.ref("/").on("value", function (snapshot) {
+            var x = snapshot.val();
+            console.log(x);
+
+        for(var i = 0; i < snapshot.length; i++) {
+            console.log(snapshot[i]);
+        }
+
+        snapshot.forEach(function (z) {
+           console.log( z.val());
+        })
+      
+    })
+
+
         $("#rating").empty()
 
         console.log("Average=" + total / ratingCount);
-        var aveRating = total/ratingCount;
+        var aveRating = total / ratingCount;
         console.log(aveRating)
         console.log(ratingCount)
         console.log(total)
         var aveRounded = aveRating.toFixed(2);
         console.log(aveRounded)
         var aveDiv = $("<div>")
-        aveDiv.text("Average Rating: "+aveRounded)
+        aveDiv.text("Average Rating: " + aveRounded)
         $("#rating").append(aveDiv)
+
     })
-};
-
-
-function rating(artist) {
-    $("#rating").empty();
-    for (i = 0; i < 5; i++) {
-        var starButton = $("<button>");
-        starButton.addClass("star");
-        starButton.attr("data-number", i + 1);
-        starButton.attr("data-artist", artist);
-        starButton.append("<i class='far fa-star'></i>");
-        console.log(starButton)
-        $("#rating").append(starButton)
-
-    }
-
-
-    $(".star").on("click", function () {
-        var artistRating = $(this).attr("data-number");
-        console.log(artistRating);
-        var artistName = $(this).attr("data-artist");
-        console.log(artistName)
-        database.ref("/ratings/" + artistName).push({
-
-            artistRating: artistRating,
-
-        })
-        //      database.ref("/ratings/"+artistName).on("child_added",function(snapshot) {
-        //     // console.log(snapshot.val())
-        //     console.log(snapshot.val().artistRating)
-        // })
-        updateRating(artistName)
-    })
-
 }
+
+
+
+
+

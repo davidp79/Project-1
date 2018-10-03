@@ -1,28 +1,57 @@
 .parallax-container {
-    height: 400px;
+    height: 200px;
   }
   
   body {
-    
     display: flex;
     min-height: 100vh;
     flex-direction: column;
     background-image: url("./images/Phase_4-3blog_345x.jpg");
     background-image: cover;
-
   }
 
   main {
     flex: 1 0 auto;
   }
-
-  .card {
-    float: left;
+  #youtube {
+    align-content: center;
   }
-
-
-      
+  .card {
+    width: 100%;
+  }
+  #search-section {
+    padding-top: 80px;
+    padding-bottom: 40px;
+  }
+  #toplist {
+    margin: auto;
+  }
+  input {
+    text-align: center;
+    }
+  input[type="text"]
+    {
+        font-size:24px;
+    }
     
+    ol,li { list-style-type: none;
+      list-style-position:inside;
+      margin:0;
+      padding:0; }
+    ol {
+      list-style: none;
+      counter-reset: my-awesome-counter;
+    }
+    ol li {
+      list-style: none;
+      counter-increment: my-awesome-counter;
+      font-weight: bold;
+    }
+    ol li::before {
+      content: counter(my-awesome-counter) ". ";
+      color: black;
+      font-weight: bold;
+    }
 
 
 
